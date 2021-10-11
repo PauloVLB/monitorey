@@ -52,7 +52,7 @@ export function PopupDuvida({ socket, isVisivel, setIsVisivel }) {
         setIsVisivel(false);
     }
     return (isVisivel && (
-        <div className="fixed w-screen h-screen bg-black bg-opacity-70 grid place-items-center">
+        <div className="fixed top-0 w-screen h-screen bg-black bg-opacity-70 grid place-items-center">
             <section className="bg-primary w-full max-w-md text-white p-8 rounded-md grid gap-8">
                 <header>
                     <h2 className="font-bold text-2xl">Nova dúvida</h2>
