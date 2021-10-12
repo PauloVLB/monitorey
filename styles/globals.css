@@ -24,4 +24,8 @@ html {
     .input {
         @apply bg-secondary w-full p-4 rounded-md border-2 border-gray-800;
     }
+    
+    .underline-btn-active {
+		  @apply bg-cta bg-opacity-25 text-cta border-cta !important;
+	  }
 }
