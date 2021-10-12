@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.underline-btn-active {
+		@apply bg-cta bg-opacity-25 text-cta border-cta !important;
+	}
+}
