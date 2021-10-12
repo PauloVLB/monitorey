@@ -2,6 +2,7 @@ import Head from "next/head";
 
 import { FilaQuestao } from "../components/FilaQuestao";
 import { ListaFrequencia } from "../components/ListaFrequencia";
+import { PopupDuvida } from '../components/PopupDuvida';
 
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
@@ -10,6 +11,7 @@ const socket = io("http://localhost:8000", { transports: ["websocket"] });
 
 export default function Fila() {
 	const [alunos, setAlunos] = useState([]);
+  const [isPopupDuvidaVisivel, setIsPopupDuvidaVisivel] = useState(false);
 
 	socket.on("listar", (data) => {
 		setAlunos(data.alunos);
@@ -42,6 +44,7 @@ export default function Fila() {
 					</div>
 					<div className="w-full flex flex-col sm:flex-row gap-4">
 						<button
+              onClick={() => setIsPopupDuvidaVisivel(true)}
 							className="w-full flex items-center justify-center p-3.5 font-bold bg-cta duration-300 hover:bg-green-500 rounded-md border-2 border-green-600 text-center"
 							type="button"
 						>
@@ -86,15 +89,11 @@ export default function Fila() {
 					]}
 				/>
 			</section>
+      <PopupDuvida
+        isVisivel={isPopupDuvidaVisivel}
+        setIsVisivel={setIsPopupDuvidaVisivel}
+        socket={socket}
+      />
 		</div>
 	);
 }
-
-// {
-// 	alunos.map((aluno, index) => (
-// 		<div key={index}>
-// 			<label>{`${index + 1}. ${aluno.nome}`}</label>
-// 			<button onClick={() => handleExcluir(index)}>Exlcuir</button>
-// 		</div>
-// 	));
-// }
