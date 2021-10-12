@@ -61,9 +61,9 @@ export default function Fila() {
 					capitulo={1}
 					questao={1}
 					alunos={[
-						{ nome: KauêJusto },
-						{ nome: KauêJusto },
-						{ nome: KauêJusto },
+						{ nome: AlunoLegal },
+						{ nome: AlunoLegal },
+						{ nome: AlunoLegal },
 					]}
 				/>
 			</section>
