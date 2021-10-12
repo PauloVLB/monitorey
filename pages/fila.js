@@ -81,8 +81,8 @@ export default function Fila() {
 				<ListaFrequencia
 					alunos={[
 						{ nome: "Tiago Rodrigues" },
-						{ nome: "Kauê Justo" },
-						{ nome: "Kauê Justissimo" },
+						{ nome: "Aluno Massa" },
+						{ nome: "Aluno Top" },
 					]}
 				/>
 			</section>
