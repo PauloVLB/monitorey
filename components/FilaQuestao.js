@@ -24,7 +24,7 @@ export function FilaQuestao(props) {
 					onClick={handleMenuClick}
 				>
 					<h2 className="font-bold">
-						Cap. {props.capitulo} - Questão {props.questao}
+						Cap. {props.capitulo} - Questão {props.numero}
 					</h2>
 					{contentMenu}
 				</header>
@@ -44,7 +44,7 @@ export function FilaQuestao(props) {
 						<h3 className="font-semibold">Alunos</h3>
 						<ul>
 							{props.alunos.map((aluno, index) => (
-								<li key={`aluno${index}`}>{aluno.nome}</li>
+								<li key={`aluno${index}`}>{aluno}</li>
 							))}
 						</ul>
 					</div>

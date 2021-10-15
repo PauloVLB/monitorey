@@ -4,7 +4,7 @@ import { useState } from "react";
 const MAX_CAPITULO = 50;
 const MAX_QUESTAO = MAX_CAPITULO;
 
-export function PopupDuvida({ socket, isVisivel, setIsVisivel }) {
+export function PopupDuvida({ socket, isVisivel, setIsVisivel, nome }) {
     const [tipoDuvida, setTipoDuvida] = useState("Questão");
     const [capitulo, setCapitulo] = useState("1");
     const [questao, setQuestao] = useState("1");
@@ -46,8 +46,9 @@ export function PopupDuvida({ socket, isVisivel, setIsVisivel }) {
         socket.emit("new-doubt", {
             tipo: tipoDuvida,
             capitulo,
-            questao
-        })
+            numero: tipoDuvida === 'Teórica' ? null : questao,
+            nome
+        });
         
         setIsVisivel(false);
     }

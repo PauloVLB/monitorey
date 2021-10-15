@@ -3,18 +3,30 @@ import Head from "next/head";
 import { FilaQuestao } from "../components/FilaQuestao";
 import { ListaFrequencia } from "../components/ListaFrequencia";
 import { PopupDuvida } from '../components/PopupDuvida';
+import { parseCookies } from "nookies";
 
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:8000", { transports: ["websocket"] });
 
-export default function Fila() {
+export default function Fila({ nomeUsuario }) {
 	const [alunos, setAlunos] = useState([]);
-  const [isPopupDuvidaVisivel, setIsPopupDuvidaVisivel] = useState(false);
+	const [questoes, setQuestoes] = useState([]);
+	const [nome, setNome] = useState(nomeUsuario);
+  	const [isPopupDuvidaVisivel, setIsPopupDuvidaVisivel] = useState(false);
 
-	socket.on("listar", (data) => {
+	
+	useEffect(() => {
+		socket.emit('new-user', { nome });
+	},[nome]);
+
+	socket.on("listar-alunos", (data) => {
 		setAlunos(data.alunos);
+	});
+
+	socket.on("listar-questoes", (data) => {
+		setQuestoes(data.questoes);
 	});
 
 	function handleExcluir(index) {
@@ -36,7 +48,7 @@ export default function Fila() {
 				<header className="w-full flex flex-col gap-8">
 					<div className="flex flex-col gap-4">
 						<h4 className="sm:text-lg text-gray-300">
-							Olá, <strong>Isaac Lourenço</strong>
+							Olá, <strong>{nome}</strong>
 						</h4>
 						<h1 className="font-bold text-2xl sm:text-3xl">
 							Fila de dúvidas
@@ -44,7 +56,7 @@ export default function Fila() {
 					</div>
 					<div className="w-full flex flex-col sm:flex-row gap-4">
 						<button
-              onClick={() => setIsPopupDuvidaVisivel(true)}
+              				onClick={() => setIsPopupDuvidaVisivel(true)}
 							className="w-full flex items-center justify-center p-3.5 font-bold bg-cta duration-300 hover:bg-green-500 rounded-md border-2 border-green-600 text-center"
 							type="button"
 						>
@@ -60,15 +72,17 @@ export default function Fila() {
 						</button>
 					</div>
 				</header>
-				<FilaQuestao
-					capitulo={1}
-					questao={1}
-					alunos={[
-						{ nome: AlunoLegal },
-						{ nome: AlunoLegal },
-						{ nome: AlunoLegal },
-					]}
-				/>
+
+				{questoes.map((questao, index) => (
+					<div key={`Q${index}`}>
+						<FilaQuestao
+							capitulo={questao.capitulo}
+							numero={questao.numero}
+							alunos={questao.alunos}
+						/>
+					</div>
+				))}
+				
 			</section>
 			<section className="w-full h-full flex flex-col gap-10">
 				<header>
@@ -82,18 +96,25 @@ export default function Fila() {
 					</div>
 				</header>
 				<ListaFrequencia
-					alunos={[
-						{ nome: "Tiago Rodrigues" },
-						{ nome: "Aluno Massa" },
-						{ nome: "Aluno Top" },
-					]}
+					alunos={alunos}
 				/>
 			</section>
       <PopupDuvida
         isVisivel={isPopupDuvidaVisivel}
         setIsVisivel={setIsPopupDuvidaVisivel}
         socket={socket}
+		nome={nome}
       />
 		</div>
 	);
+}
+
+export async function getServerSideProps(ctx) {
+	const cookies = parseCookies(ctx);
+
+	return {
+		props: {
+			nomeUsuario: cookies.nomeUsuario,
+		}
+	}
 }

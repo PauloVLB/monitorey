@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { io } from "socket.io-client";
 import Head from "next/head";
-
-const socket = io("http://localhost:8000", { transports: ["websocket"] });
+import { setCookie } from "nookies";
 
 export default function Home() {
 	const [nome, setNome] = useState("");
@@ -11,11 +9,10 @@ export default function Home() {
 
 	function handleConnect(event) {
 		event.preventDefault();
-
-		socket.emit("new-user", {
-			nome,
+		setCookie(null, "nomeUsuario", nome, {
+			path: '/',
+			maxAge: 86400
 		});
-
 		router.push("/fila");
 	}
 
