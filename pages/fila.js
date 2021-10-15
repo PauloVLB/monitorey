@@ -12,23 +12,7 @@ const socket = io("http://localhost:8000", { transports: ["websocket"] });
 
 export default function Fila({ nomeUsuario }) {
 	const [alunos, setAlunos] = useState([]);
-	const [questoes, setQuestoes] = useState([
-		{
-			capitulo: 1,
-			numero: 2,
-			alunos: [],
-		},
-		{
-			capitulo: 3,
-			numero: 3,
-			alunos: [],
-		},
-		{
-			capitulo: 4,
-			numero: 5,
-			alunos: [],
-		},
-	]);
+	const [questoes, setQuestoes] = useState([]);
 	const [nome, setNome] = useState(nomeUsuario);
 	const [isPopupDuvidaVisivel, setIsPopupDuvidaVisivel] = useState(false);
 
