@@ -4,7 +4,7 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/PauloVLB/monitorey?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/PauloVLB/monitorey?style=for-the-badge)
 
-<img src="public/mockup.png" alt="mockup" />
+<img src="public/example.png" alt="mockup" />
 
 > Projeto com intuito de ajudar nas monitorias da matéria de Matemática Elementar na UFRN.
 
@@ -55,7 +55,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
       <a href="https://github.com/PauloVLB">
         <img src="https://github.com/PauloVLB.png" width="100px;" alt="Foto do Paulo Silva no GitHub"/><br>
         <sub>
-          <b>Paulo Victor</b>
+          <b>Paulo Vitor</b>
         </sub>
       </a>
     </td>
