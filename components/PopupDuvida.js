@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { X } from "react-feather";
 
 const MAX_CAPITULO = 50;
 const MAX_QUESTAO = MAX_CAPITULO;
@@ -39,6 +40,10 @@ export function PopupDuvida({ socket, isVisivel, setIsVisivel, nome }) {
         }
     }
 
+    function hidePopup() {
+        setIsVisivel(false)
+    }
+
     function handleSubmit(e) {
         e.preventDefault();
 
@@ -53,10 +58,16 @@ export function PopupDuvida({ socket, isVisivel, setIsVisivel, nome }) {
         setIsVisivel(false);
     }
     return (isVisivel && (
-        <div className="fixed top-0 w-screen h-screen bg-black bg-opacity-70 grid place-items-center">
+        <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-70 grid place-items-center">
             <section className="bg-primary w-full max-w-md text-white p-8 rounded-md grid gap-8">
-                <header>
+                <header className="flex justify-between">
                     <h2 className="font-bold text-2xl">Nova dúvida</h2>
+                    <button
+                        onClick={() => hidePopup()}
+                        className="transform hover:scale-105"
+                    >
+                        <X/>
+                    </button>
                 </header>
                 <main className="grid gap-8">
                     <form 
