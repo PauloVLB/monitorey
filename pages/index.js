@@ -10,7 +10,7 @@ export default function Home() {
 	function handleConnect(event) {
 		event.preventDefault();
 
-		if (nome.split(" ").length > 1) {
+		if (nome.split(" ").length <= 1) {
 			alert("Você deve informar seu nome completo.");
 			return;
 		}
@@ -46,6 +46,7 @@ export default function Home() {
 							Seu nome completo
 						</label>
 						<input
+							value={nome}
 							id="inputNomeCompleto"
 							type="text"
 							className="bg-secondary w-full p-4 rounded-md border-2 border-gray-800"
