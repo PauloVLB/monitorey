@@ -37,7 +37,7 @@ export function FilaQuestao(props) {
 					onClick={handleMenuClick}
 				>
 					<h2 className="font-bold">
-						Cap. {props.capitulo} - Questão {props.numero}
+						Cap. {props.capitulo} - {props.tipo} {props.numero}
 					</h2>
 					{contentMenu}
 				</header>
