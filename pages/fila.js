@@ -8,7 +8,7 @@ import { parseCookies } from "nookies";
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io(process.env.BACK_URL, { transports: ["websocket"] });
+const socket = io("https://monitorey-back.herokuapp.com/", { transports: ["websocket"] });
 
 export default function Fila({ nomeUsuario }) {
 	const [alunos, setAlunos] = useState([]);
