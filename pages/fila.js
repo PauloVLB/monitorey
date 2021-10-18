@@ -8,7 +8,7 @@ import { parseCookies } from "nookies";
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:8000", { transports: ["websocket"] });
+const socket = io(process.env.BACK_URL, { transports: ["websocket"] });
 
 export default function Fila({ nomeUsuario }) {
 	const [alunos, setAlunos] = useState([]);
@@ -80,7 +80,10 @@ export default function Fila({ nomeUsuario }) {
 							maxQ={questoes.length - 1}
 							capitulo={questao.capitulo}
 							numero={questao.numero}
+							tipo={questao.tipo}
 							alunos={questao.alunos}
+							socket={socket}
+							nomeAluno={nome}
 						/>
 					))}
 				</main>

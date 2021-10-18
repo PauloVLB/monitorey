@@ -16,6 +16,16 @@ export function FilaQuestao(props) {
 		}
 	}
 
+	function handleSairDuvida() {
+		const dataQuestao = { 
+			nomeAluno: props.nomeAluno, 
+			tipo: props.tipo,
+			capitulo: props.capitulo,
+			numero: props.numero
+		}
+		props.socket.emit('sair-duvida', dataQuestao);
+	}
+
 	return (
 		<>
 			<div className="w-full flex flex-col" {...props}>
@@ -36,12 +46,16 @@ export function FilaQuestao(props) {
 					className={`${contentState} w-full flex flex-col gap-8 px-6 py-4 bg-primary-dark`}
 				>
 					<div className="w-full flex flex-col sm:flex-row gap-6 sm:gap-8">
-						<button className="w-full text-center px-3 py-2 border-2 rounded-md border-cta text-cta duration-300 hover:bg-cta hover:bg-opacity-20">
-							Marcar como resolvida
-						</button>
-						<button className="w-full text-center px-3 py-2 border-2 rounded-md border-cta-complementary text-cta-complementary duration-300 hover:bg-cta-complementary hover:bg-opacity-20">
-							Sair da questão
-						</button>
+						{props.alunos.includes(props.nomeAluno) && (
+							<>
+								<button onClick={handleSairDuvida} className="w-full text-center px-3 py-2 border-2 rounded-md border-cta text-cta duration-300 hover:bg-cta hover:bg-opacity-20">
+									Marcar como resolvida
+								</button>
+								<button onClick={handleSairDuvida} className="w-full text-center px-3 py-2 border-2 rounded-md border-cta-complementary text-cta-complementary duration-300 hover:bg-cta-complementary hover:bg-opacity-20">
+									Sair da questão
+								</button>
+							</>
+						)}
 					</div>
 					<div className="flex flex-col gap-2">
 						<h3 className="font-semibold">Alunos</h3>
