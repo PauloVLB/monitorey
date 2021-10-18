@@ -9,6 +9,12 @@ export default function Home() {
 
 	function handleConnect(event) {
 		event.preventDefault();
+
+		if (nome.split(" ").length > 1) {
+			alert("Você deve informar seu nome completo.");
+			return;
+		}
+
 		setCookie(null, "nomeUsuario", nome, {
 			path: '/',
 			maxAge: 86400
