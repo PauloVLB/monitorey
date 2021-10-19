@@ -22,6 +22,15 @@ export default function Home() {
 		router.push("/fila");
 	}
 
+	function handleConnectMonitor(event) {
+		event.preventDefault();
+		setCookie(null, "nomeUsuario", nome, {
+			path: '/',
+			maxAge: 86400
+		});
+		router.push("/fila?view=monitor");
+	}
+
 	return (
 		<section className="h-screen bg-primary flex flex-col justify-center items-center gap-16 text-white p-8">
 			<Head>
@@ -51,6 +60,7 @@ export default function Home() {
 							type="text"
 							className="bg-secondary w-full p-4 rounded-md border-2 border-gray-800"
 							placeholder="Jean Baptiste Joseph Fourier"
+							value={nome}
 							onChange={(e) => setNome(e.target.value)}
 						/>
 					</div>
@@ -60,6 +70,13 @@ export default function Home() {
 						className="bg-green-700 w-full p-4 rounded-md border-2 border-green-600 text-center"
 					>
 						Quero tirar dúvidas
+					</button>
+
+					<button
+						onClick={handleConnectMonitor}
+						className="text-green-700 font-bold w-full p-4 rounded-md border-2 border-green-600 text-center"
+					>
+						Sou monitor
 					</button>
 				</form>
 			</main>

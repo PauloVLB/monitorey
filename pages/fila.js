@@ -10,11 +10,12 @@ import { io } from "socket.io-client";
 
 const socket = io("https://monitorey-back.herokuapp.com/", { transports: ["websocket"] });
 
-export default function Fila({ nomeUsuario }) {
+export default function Fila({ nomeUsuario, senhaMonitor, opcoesMonitor }) {
 	const [alunos, setAlunos] = useState([]);
 	const [questoes, setQuestoes] = useState([]);
 	const [nome, setNome] = useState(nomeUsuario);
 	const [isPopupDuvidaVisivel, setIsPopupDuvidaVisivel] = useState(false);
+	const [isMonitor, setIsMonitor] = useState(opcoesMonitor);
 
 	useEffect(() => {
 		socket.emit("new-user", { nome });
@@ -38,6 +39,21 @@ export default function Fila({ nomeUsuario }) {
 			.classList.toggle("underline-btn-active");
 	}
 
+	function handleSalvarDados() {
+  		const senhaInformada = prompt("Qual é a senha?", "");
+		if (senhaInformada == senhaMonitor) {
+			let dataStr = JSON.stringify(alunos.map(aluno => aluno.nome));
+			let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+		
+			let exportFileDefaultName = 'data.json';
+		
+			let linkElement = document.createElement('a');
+			linkElement.setAttribute('href', dataUri);
+			linkElement.setAttribute('download', exportFileDefaultName);
+			linkElement.click();
+		}
+	}
+
 	return (
 		<div className="min-h-screen h-full min-w-screen bg-primary text-white p-6 sm:p-12 grid sm:grid-cols-2 gap-16">
 			<Head>
@@ -54,21 +70,37 @@ export default function Fila({ nomeUsuario }) {
 						</h1>
 					</div>
 					<div className="w-full flex flex-col sm:flex-row gap-4">
-						<button
-							onClick={() => setIsPopupDuvidaVisivel(true)}
-							className="w-full flex items-center justify-center p-3.5 font-bold bg-cta duration-300 hover:bg-green-500 rounded-md border-2 border-green-600 text-center"
-							type="button"
-						>
-							Adicionar dúvida
-						</button>
-						<button
-							id="duvidas"
-							className="w-full flex items-center justify-center p-3.5 border-2 border-gray-800 rounded-md duration-300 hover:border-cta hover:text-cta"
-							type="button"
-							onClick={handleMinhaDuvidasButton}
-						>
-							Minhas dúvidas
-						</button>
+						{!isMonitor && (
+							<>
+								<button
+									onClick={() => setIsPopupDuvidaVisivel(true)}
+									className="w-full flex items-center justify-center p-3.5 font-bold bg-cta duration-300 hover:bg-green-500 rounded-md border-2 border-green-600 text-center"
+									type="button"
+								>
+									Adicionar dúvida
+								</button>
+								<button
+									id="duvidas"
+									className="w-full flex items-center justify-center p-3.5 border-2 border-gray-800 rounded-md duration-300 hover:border-cta hover:text-cta"
+									type="button"
+									onClick={handleMinhaDuvidasButton}
+								>
+									Minhas dúvidas
+								</button>
+							</>
+						) || (
+							<>
+								<button
+									onClick={handleSalvarDados}
+									className="w-full flex items-center justify-center p-3.5 font-bold bg-cta duration-300 hover:bg-green-500 rounded-md border-2 border-green-600 text-center"
+									type="button"
+								>
+									Salvar dados
+								</button>
+							</>
+						)}
+						
+						
 					</div>
 				</header>
 
@@ -114,9 +146,13 @@ export default function Fila({ nomeUsuario }) {
 export async function getServerSideProps(ctx) {
 	const cookies = parseCookies(ctx);
 
+	const opcoesMonitor = ctx.query.view == "monitor";
+
 	return {
 		props: {
 			nomeUsuario: cookies.nomeUsuario,
+			senhaMonitor: process.env.SENHA_MONITOR,
+			opcoesMonitor
 		},
 	};
 }
