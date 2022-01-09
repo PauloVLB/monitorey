@@ -13,6 +13,8 @@ const socket = io("https://monitorey-back.herokuapp.com/", { transports: ["webso
 export default function Fila({ nomeUsuario, senhaMonitor, opcoesMonitor }) {
 	const [alunos, setAlunos] = useState([]);
 	const [questoes, setQuestoes] = useState([]);
+	const [questoesVisiveis, setQuestoesVisiveis] = useState();
+	const [isMinhasDuvidas, setIsMinhasDuvidas] = useState(false);
 	const [nome, setNome] = useState(nomeUsuario);
 	const [isPopupDuvidaVisivel, setIsPopupDuvidaVisivel] = useState(false);
 	const [isMonitor, setIsMonitor] = useState(opcoesMonitor);
@@ -27,16 +29,38 @@ export default function Fila({ nomeUsuario, senhaMonitor, opcoesMonitor }) {
 
 	socket.on("listar-questoes", (data) => {
 		setQuestoes(data.questoes);
+		if (isMinhasDuvidas) {
+			showMinhasDuvidas();
+		} else {
+			setQuestoesVisiveis(questoes);
+		}
 	});
 
 	function handleExcluir(index) {
 		socket.emit("delete", { index });
 	}
 
+	function showMinhasDuvidas() {
+		const newQuestoesVisiveis = questoes.filter(questao => questao.alunos.includes(nome));
+		
+		if (newQuestoesVisiveis.length) {
+			setQuestoesVisiveis(newQuestoesVisiveis);
+		}
+	}
+
 	function handleMinhaDuvidasButton() {
+		const newIsMinhasDuvidas = !isMinhasDuvidas;
+		setIsMinhasDuvidas(newIsMinhasDuvidas);
+
 		document
 			.getElementById("duvidas")
 			.classList.toggle("underline-btn-active");
+
+		if (newIsMinhasDuvidas) {
+			showMinhasDuvidas();
+		} else {
+			setQuestoesVisiveis(questoes);
+		}
 	}
 
 	function handleSalvarDados() {
@@ -105,7 +129,7 @@ export default function Fila({ nomeUsuario, senhaMonitor, opcoesMonitor }) {
 				</header>
 
 				<main className="w-full flex flex-col gap-0">
-					{questoes.map((questao, index) => (
+					{questoesVisiveis?.map((questao, index) => (
 						<FilaQuestao
 							key={`Q${index}`}
 							index={index}
